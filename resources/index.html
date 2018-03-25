@@ -32,7 +32,7 @@
     <div class="container">
         <div class="jumbotron text-center">
             <h1>My Notes:
-                <span class="label label-info">0</span>
+                <span class="label label-info">{{notes.length}}</span>
             </h1>
         </div>
     </div>
@@ -45,11 +45,28 @@
                 </div>
             </form>
         </div>
-        <div class="col-sm-8 col-sm-offset-2 text-left" ng-show="newNote">
+            <div class="col-sm-8 col-sm-offset-2 text-left" ng-show="newNote">
             <label>Preview:</label>
             <span>{{newNote | firstUppercase}}</span>
         </div>
+        <button type="submit" class="btn btn-primary btn-lg" ng-click="addNote(newNote)" ng-disabled="!newNote">Add</button>
     </div>
+
+    <div id="todo-list" class="row">
+			<div class="col-sm-4 col-sm-offset-4">
+
+				<div class="checkbox" ng-repeat="note in notes">
+					<label>
+						<input type="checkbox" ng-click="deleteNote($index)"> {{ note }}
+					</label>
+				</div>
+
+				<p class="text-center" ng-show="loading">
+					<span class="fa fa-spinner fa-spin fa-3x"></span>
+				</p>
+
+			</div>
+		</div>
 
 </body>
 
