@@ -1,0 +1,13 @@
+{
+    "name": "single-page-app-playground",
+    "version": "0.0.0",
+    "description": "playing with simple page apps",
+    "main": "server.js",
+    "author": "Scotch",
+    "dependencies": {
+        "angular": "^1.x.x",
+        "bootstrap-css-only": "^3.x.x",
+        "font-awesome": "^4.x.x",
+        "express": "^4.x.x"
+    }
+}

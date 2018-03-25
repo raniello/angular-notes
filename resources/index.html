@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Notes</title>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="font/font-awesome.min.css">
+    <style>
+        html {
+            overflow-y: scroll;
+        }
+
+        body {
+            padding-top: 50px;
+        }
+
+        #todo-list {
+            margin-bottom: 30px;
+        }
+
+        #todo-form {
+            margin-bottom: 50px;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="angular/angular.min.js"></script>
+    <script src="core.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1>My Notes:
+                <span class="label label-info">0</span>
+            </h1>
+        </div>
+    </div>
+
+    <div id="todo-form" class="row">
+			<div class="col-sm-8 col-sm-offset-2 text-center">
+				<form>
+					<div class="form-group">
+						<input type="text" class="form-control input-lg text-center" placeholder="Insert your note" >
+					</div>
+				</form>
+			</div>
+		</div>
+
+</body>
+
+</html>
