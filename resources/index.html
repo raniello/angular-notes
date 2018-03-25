@@ -45,12 +45,10 @@
                 </div>
             </form>
         </div>
-        <div class="col-sm-8 col-sm-offset-2 text-center">
-                <span>{{newNote}}</span>
+        <div class="col-sm-8 col-sm-offset-2 text-left" ng-show="newNote">
+            <label>Preview:</label>
+            <span>{{newNote | firstUppercase}}</span>
         </div>
-        <div class="col-sm-8 col-sm-offset-2 text-center">
-                <span ng-bind="newNote"></span> 
-        </div>        
     </div>
 
 </body>
