@@ -1,15 +1,15 @@
 <div class="row">
-        <div class="col-sm-4 col-sm-offset-4">
-
-            <div class="checkbox" ng-repeat="note in notes">
-                <label>
-                    <input type="checkbox" ng-click="deleteNote($index)"> {{ note }}
-                </label>
-            </div>
-
-            <p class="text-center" ng-show="loading">
-                <span class="fa fa-spinner fa-spin fa-3x"></span>
-            </p>
-
+    <div class="col-sm-4 col-sm-offset-4">
+        <b>{{label}}</b>
+        <div class="checkbox" ng-repeat="note in list track by $index">
+            <label>
+                <input type="checkbox" ng-click="onCheck({index : $index})" ng-model=""> {{ note }}
+            </label>
         </div>
+
+        <p class="text-center" ng-show="loading">
+            <span class="fa fa-spinner fa-spin fa-3x"></span>
+        </p>
+
     </div>
+</div>

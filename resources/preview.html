@@ -1,4 +1,4 @@
-<div class="col-sm-8 col-sm-offset-2 text-left" ng-show="newNote">
-    <label>Preview:</label>
+<div class="col-sm-8 col-sm-offset-2 text-left">
+    <label ng-class="{'disabled-label' : !newNote}">Preview:</label>
     <span>{{newNote | firstUppercase}}</span>
 </div>

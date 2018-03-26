@@ -15,12 +15,11 @@
             padding-top: 50px;
         }
 
-        #todo-list {
-            margin-bottom: 30px;
-        }
-
-        #todo-form {
+        .note-form {
             margin-bottom: 50px;
+        }
+        .disabled-label {
+            color: #ccc;
         }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,13 +31,13 @@
     <div class="container">
         <div class="jumbotron text-center">
             <h1>My Notes:
-                <span class="label label-info">{{notes.length}}</span>
+                <span class="label label-info">{{notes.length + reminders.length}}</span>
             </h1>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-sm-8 col-sm-offset-2 text-center">
+    <div class="note-form row">
+        <div class="col-sm-7 col-sm-offset-2 text-center">
             <form>
                 <div class="form-group">
                     <input type="text" class="form-control input-lg text-center" placeholder="Insert your note" ng-model="newNote">
@@ -46,11 +45,14 @@
             </form>
         </div>
         <preview></preview>
-        <button type="submit" class="btn btn-primary btn-lg" ng-click="addNote(newNote)" ng-disabled="!newNote">Add</button>
+        <button type="submit" class="btn btn-primary btn-lg" ng-click="addNote()" ng-disabled="!newNote">Add Note</button>
+        <button type="submit" class="btn btn-primary btn-lg" ng-click="addReminder()" ng-disabled="!newNote">Add Reminder</button>
     </div>
 
-    <note-list></note-list>
-
-</body>
+    <div class="row">   
+        <note-list label="Notes" list="notes" on-check="deleteNote(index)" class="col-sm-5 col-sm-offset-1"></note-list>
+        <note-list label="Reminders" list="reminders" on-check="deleteReminder(index)" class="col-sm-5 col-sm-offset-0"></note-list>
+    </div>
+</body> 
 
 </html>

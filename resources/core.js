@@ -2,15 +2,33 @@ var app = angular.module('notes', []);
 
 app.controller('noteController', ['$scope', function($scope){
     $scope.notes = [];
+    $scope.reminders = [];
 
     $scope.newNote = "";
-    $scope.addNote = function(note){
-        $scope.notes.push(firstToUpperCase(note));
+
+    var addNoteToList = function(list) {
+        list.push(firstToUpperCase($scope.newNote));
         $scope.newNote = "";
+    };
+
+    var removeNoteFromList = function(list, noteIndex){
+        list.splice(noteIndex, 1);
+    };
+
+    $scope.addNote = function(){
+        addNoteToList($scope.notes);
+    }
+
+    $scope.addReminder = function(){
+        addNoteToList($scope.reminders);
     }
 
     $scope.deleteNote = function(noteIndex){
-        $scope.notes.splice(noteIndex, 1);
+        removeNoteFromList($scope.notes, noteIndex);
+    }
+
+    $scope.deleteReminder = function(noteIndex){
+        removeNoteFromList($scope.reminders, noteIndex);
     }
 }]);
 
@@ -27,7 +45,12 @@ app.directive('preview', function(){
 .directive('noteList', function(){
     return {
         restrict: 'E',
-        templateUrl : "noteList.html"
+        templateUrl : "noteList.html",
+        scope : {
+            list : "=",
+            label : "@",
+            onCheck : "&"
+        }
     };
 })
 
