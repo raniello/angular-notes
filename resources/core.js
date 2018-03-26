@@ -18,6 +18,20 @@ app.filter('firstUppercase', function(){
     return firstToUpperCase;
 });
 
+app.directive('preview', function(){
+    return {
+        restrict: 'E',
+        templateUrl : "preview.html"
+    };
+})
+.directive('noteList', function(){
+    return {
+        restrict: 'E',
+        templateUrl : "noteList.html"
+    };
+})
+
+
 var firstToUpperCase = function(input){
     var out = '';
     input = input || '';
