@@ -3,7 +3,7 @@
         <b>{{label}}</b>
         <div class="checkbox" ng-repeat="note in list track by $index">
             <label>
-                <input type="checkbox" ng-click="onCheck({index : $index})" ng-model=""> {{ note }}
+                <input type="checkbox" ng-click="onCheck({index : $index})"> {{ note }}
             </label>
         </div>
 

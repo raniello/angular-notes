@@ -37,6 +37,9 @@
     </div>
 
     <div class="note-form row">
+        <auto-generate label="reminder" note="reminder!" class="col-sm-offset-2" generate="addReminder(note)"></auto-generate>
+    </div>
+    <div class="note-form row">
         <div class="col-sm-7 col-sm-offset-2 text-center">
             <form>
                 <div class="form-group">
@@ -45,8 +48,8 @@
             </form>
         </div>
         <preview></preview>
-        <button type="submit" class="btn btn-primary btn-lg" ng-click="addNote()" ng-disabled="!newNote">Add Note</button>
-        <button type="submit" class="btn btn-primary btn-lg" ng-click="addReminder()" ng-disabled="!newNote">Add Reminder</button>
+        <button type="submit" class="btn btn-primary btn-lg" ng-click="addNewNote()" ng-disabled="!newNote">Add Note</button>
+        <button type="submit" class="btn btn-primary btn-lg" ng-click="addNewReminder()" ng-disabled="!newNote">Add Reminder</button>
     </div>
 
     <div class="row">   

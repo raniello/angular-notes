@@ -6,8 +6,8 @@ app.controller('noteController', ['$scope', function($scope){
 
     $scope.newNote = "";
 
-    var addNoteToList = function(list) {
-        list.push(firstToUpperCase($scope.newNote));
+    var addNoteToList = function(list, note) {
+        list.push(firstToUpperCase(note));
         $scope.newNote = "";
     };
 
@@ -15,12 +15,26 @@ app.controller('noteController', ['$scope', function($scope){
         list.splice(noteIndex, 1);
     };
 
-    $scope.addNote = function(){
-        addNoteToList($scope.notes);
+    $scope.testGenerate = function(){
+        console.log("test generate");
     }
 
-    $scope.addReminder = function(){
-        addNoteToList($scope.reminders);
+    $scope.addNewNote = function(){
+        addNoteToList($scope.notes, $scope.newNote);
+        $scope.newNote = "";
+    }
+
+    $scope.addNote = function(note){
+        addNoteToList($scope.notes, note);
+    }
+
+    $scope.addNewReminder = function(){
+        addNoteToList($scope.reminders, $scope.newNote);
+        $scope.newNote = "";
+    }
+
+    $scope.addReminder = function(reminder){
+        addNoteToList($scope.reminders, reminder);
     }
 
     $scope.deleteNote = function(noteIndex){
@@ -53,7 +67,22 @@ app.directive('preview', function(){
         }
     };
 })
-
+.directive('autoGenerate', function(){
+    return {
+        restrict: 'E',
+        templateUrl : "autoGenerate.html",
+        scope : {
+            label : "@",
+            note : "@",
+            generate : "&"
+        },
+        controller : ['$scope', function($scope){
+            $scope.schedule = function(note){
+                setTimeout(function(){$scope.generate({note:note});}, 3000);
+            };
+        }]
+    };
+})
 
 var firstToUpperCase = function(input){
     var out = '';
