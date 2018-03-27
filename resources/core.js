@@ -1,6 +1,6 @@
 var app = angular.module('notes', []);
 
-app.controller('noteController', ['$scope', '$http', function($scope, $http){
+app.controller('noteController', ['$scope', '$http', '$log', function($scope, $http, $log){
     $scope.notes = [];
     $scope.reminders = [];
 
@@ -17,14 +17,14 @@ app.controller('noteController', ['$scope', '$http', function($scope, $http){
         $http.post('/api/'+listName, {text : note})
         .then(
             function(){$scope[listName].push(firstToUpperCase(note));},
-            function(err){alert('Error saving "'+note+'" into '+listName);console.log(err);});
+            function(err){alert('Error saving "'+note+'" into '+listName);$log.error(err);});
     };
 
     var removeNoteFromList = function(listName, noteIndex){
         $http.delete('/api/'+listName + '/'+ noteIndex)
         .then(
             function(){$scope[listName].splice(noteIndex, 1);},
-            function(err){alert('Error deleting index "'+note+'" from '+listName);console.log(err);});
+            function(err){alert('Error deleting index "'+note+'" from '+listName);$log.error(err);});
         
     };
 

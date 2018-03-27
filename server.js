@@ -16,7 +16,6 @@ var notes = ['Via emilia 272'];
 var reminders = ['Ricorda di studiare AngularJS'];
 
 app.get('/api/notes', function(req, res) {
-    console.log("get notes")
     res.json(notes);
 });
 app.get('/api/reminders', function(req, res) {
