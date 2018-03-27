@@ -8,7 +8,6 @@ app.controller('noteController', ['$scope', function($scope){
 
     var addNoteToList = function(list, note) {
         list.push(firstToUpperCase(note));
-        $scope.newNote = "";
     };
 
     var removeNoteFromList = function(list, noteIndex){
@@ -76,9 +75,9 @@ app.directive('preview', function(){
             note : "@",
             generate : "&"
         },
-        controller : ['$scope', function($scope){
+        controller : ['$scope', '$timeout', function($scope, $timeout){
             $scope.schedule = function(note){
-                setTimeout(function(){$scope.generate({note:note});}, 3000);
+                $timeout(function(){$scope.generate({note:note});}, 3000);
             };
         }]
     };
