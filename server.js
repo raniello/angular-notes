@@ -4,6 +4,7 @@ var app = express();
 
 app.use(express.static('./resources'));
 app.use('/angular', express.static('./node_modules/angular'))
+app.use('/angular-route', express.static('./node_modules/angular-route'))
 app.use('/bootstrap', express.static('./node_modules/bootstrap-css-only/css'))
 app.use('/font', express.static('./node_modules/font-awesome/css'))
 

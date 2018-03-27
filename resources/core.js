@@ -1,4 +1,4 @@
-var app = angular.module('notes', []);
+var app = angular.module('notes', ['ngRoute']);
 
 app.controller('noteController', ['$scope', '$http', '$log', function($scope, $http, $log){
     $scope.notes = [];
