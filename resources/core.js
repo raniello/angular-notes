@@ -1,47 +1,57 @@
 var app = angular.module('notes', []);
 
-app.controller('noteController', ['$scope', function($scope){
+app.controller('noteController', ['$scope', '$http', function($scope, $http){
     $scope.notes = [];
     $scope.reminders = [];
 
+    $http.get('/api/notes').then(function(response){
+        $scope.notes = response.data;
+    });
+    $http.get('/api/reminders').then(function(response){
+        $scope.reminders = response.data;
+    });
+
     $scope.newNote = "";
 
-    var addNoteToList = function(list, note) {
-        list.push(firstToUpperCase(note));
+    var addNoteToList = function(listName, note) {
+        $http.post('/api/'+listName, {text : note})
+        .then(
+            function(){$scope[listName].push(firstToUpperCase(note));},
+            function(err){alert('Error saving "'+note+'" into '+listName);console.log(err);});
     };
 
-    var removeNoteFromList = function(list, noteIndex){
-        list.splice(noteIndex, 1);
+    var removeNoteFromList = function(listName, noteIndex){
+        $http.delete('/api/'+listName + '/'+ noteIndex)
+        .then(
+            function(){$scope[listName].splice(noteIndex, 1);},
+            function(err){alert('Error deleting index "'+note+'" from '+listName);console.log(err);});
+        
     };
-
-    $scope.testGenerate = function(){
-        console.log("test generate");
-    }
 
     $scope.addNewNote = function(){
-        addNoteToList($scope.notes, $scope.newNote);
+        addNoteToList('notes', $scope.newNote);
         $scope.newNote = "";
     }
 
     $scope.addNote = function(note){
-        addNoteToList($scope.notes, note);
+        addNoteToList('notes', note);
     }
 
     $scope.addNewReminder = function(){
-        addNoteToList($scope.reminders, $scope.newNote);
+        addNoteToList('reminders', $scope.newNote);
         $scope.newNote = "";
     }
 
     $scope.addReminder = function(reminder){
-        addNoteToList($scope.reminders, reminder);
+        addNoteToList('reminders', reminder);
     }
 
     $scope.deleteNote = function(noteIndex){
-        removeNoteFromList($scope.notes, noteIndex);
+        removeNoteFromList('notes', noteIndex);
     }
 
     $scope.deleteReminder = function(noteIndex){
-        removeNoteFromList($scope.reminders, noteIndex);
+        removeNoteFromList('reminders', noteIndex);
     }
 }]);
 
