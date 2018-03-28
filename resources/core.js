@@ -1,102 +1,131 @@
 var app = angular.module('notes', ['ngRoute']);
 
-app.controller('noteController', ['$scope', '$http', '$log', function($scope, $http, $log){
-    $scope.notes = [];
-    $scope.reminders = [];
-
-    $http.get('/api/notes').then(function(response){
-        $scope.notes = response.data;
-    });
-    $http.get('/api/reminders').then(function(response){
-        $scope.reminders = response.data;
-    });
-
-    $scope.newNote = "";
-
-    var addNoteToList = function(listName, note) {
-        $http.post('/api/'+listName, {text : note})
-        .then(
-            function(){$scope[listName].push(firstToUpperCase(note));},
-            function(err){alert('Error saving "'+note+'" into '+listName);$log.error(err);});
-    };
-
-    var removeNoteFromList = function(listName, noteIndex){
-        $http.delete('/api/'+listName + '/'+ noteIndex)
-        .then(
-            function(){$scope[listName].splice(noteIndex, 1);},
-            function(err){alert('Error deleting index "'+note+'" from '+listName);$log.error(err);});
-        
-    };
-
-    $scope.addNewNote = function(){
-        addNoteToList('notes', $scope.newNote);
+app.controller('noteController', ['$scope', '$log', 'noteProvider',
+    function ($scope, $log, noteProvider) {
+        $scope.notes = [];
+        $scope.reminders = [];
         $scope.newNote = "";
-    }
 
-    $scope.addNote = function(note){
-        addNoteToList('notes', note);
-    }
+        noteProvider.getNotes(function (response) {
+            $scope.notes = response.data;
+        });
 
-    $scope.addNewReminder = function(){
-        addNoteToList('reminders', $scope.newNote);
-        $scope.newNote = "";
-    }
+        noteProvider.getReminders(function (response) {
+            $scope.reminders = response.data;
+        });
 
-    $scope.addReminder = function(reminder){
-        addNoteToList('reminders', reminder);
-    }
+        var addNoteToList = function (listName, note) {
+            var add = listName == 'notes' ? noteProvider.addNote : noteProvider.addReminder
+            add(note, 
+                function () { console.log('adding');$scope[listName].push(firstToUpperCase(note)); },
+                function (err) { alert('Error saving "' + note + '" into ' + listName); $log.error(err); });
+        };
 
-    $scope.deleteNote = function(noteIndex){
-        removeNoteFromList('notes', noteIndex);
-    }
+        var removeNoteFromList = function (listName, noteIndex) {
+            var remove = listName == 'notes' ? noteProvider.deleteNote : noteProvider.deleteReminder
+            remove(noteIndex,
+                function () { $scope[listName].splice(noteIndex, 1); },
+                function (err) { alert('Error deleting index "' + note + '" from ' + listName); $log.error(err); });
 
-    $scope.deleteReminder = function(noteIndex){
-        removeNoteFromList('reminders', noteIndex);
-    }
-}]);
+        };
 
-app.filter('firstUppercase', function(){
+        $scope.addNewNote = function () {
+            addNoteToList('notes', $scope.newNote);
+            $scope.newNote = "";
+        }
+
+        $scope.addNote = function (note) {
+            addNoteToList('notes', note);
+        }
+
+        $scope.addNewReminder = function () {
+            addNoteToList('reminders', $scope.newNote);
+            $scope.newNote = "";
+        }
+
+        $scope.addReminder = function (reminder) {
+            addNoteToList('reminders', reminder);
+        }
+
+        $scope.deleteNote = function (noteIndex) {
+            removeNoteFromList('notes', noteIndex);
+        }
+
+        $scope.deleteReminder = function (noteIndex) {
+            removeNoteFromList('reminders', noteIndex);
+        }
+    }]);
+
+app.filter('firstUppercase', function () {
     return firstToUpperCase;
 });
 
-app.directive('preview', function(){
+app.directive('preview', function () {
     return {
         restrict: 'E',
-        templateUrl : "preview.html"
+        templateUrl: "preview.html"
     };
 })
-.directive('noteList', function(){
-    return {
-        restrict: 'E',
-        templateUrl : "noteList.html",
-        scope : {
-            list : "=",
-            label : "@",
-            onCheck : "&"
-        }
-    };
-})
-.directive('autoGenerate', function(){
-    return {
-        restrict: 'E',
-        templateUrl : "autoGenerate.html",
-        scope : {
-            label : "@",
-            note : "@",
-            generate : "&"
-        },
-        controller : ['$scope', '$timeout', function($scope, $timeout){
-            $scope.schedule = function(note){
-                $timeout(function(){$scope.generate({note:note});}, 3000);
-            };
-        }]
-    };
-})
+    .directive('noteList', function () {
+        return {
+            restrict: 'E',
+            templateUrl: "noteList.html",
+            scope: {
+                list: "=",
+                label: "@",
+                onCheck: "&"
+            }
+        };
+    })
+    .directive('autoGenerate', function () {
+        return {
+            restrict: 'E',
+            templateUrl: "autoGenerate.html",
+            scope: {
+                label: "@",
+                note: "@",
+                generate: "&"
+            },
+            controller: ['$scope', '$timeout', function ($scope, $timeout) {
+                $scope.schedule = function (note) {
+                    $timeout(function () { $scope.generate({ note: note }); }, 3000);
+                };
+            }]
+        };
+    })
 
-var firstToUpperCase = function(input){
+
+app.service('noteProvider', ['$http', function ($http) {
+
+    this.getNotes = function (onSuccess, onError) {
+        $http.get('/api/notes').then(onSuccess, onError);
+    }
+
+    this.getReminders = function (onSuccess, onError) {
+        $http.get('/api/reminders').then(onSuccess, onError);
+    }
+
+    this.addNote = function (note, onSuccess, onError) {
+        $http.post('/api/notes', { text: note }).then(onSuccess, onError);
+    }
+
+    this.addReminder = function (reminder, onSuccess, onError) {
+        $http.post('/api/reminders', { text: reminder }).then(onSuccess, onError);
+    }
+
+    this.deleteNote = function (index, onSuccess, onError) {
+        $http.delete('/api/notes/' + index).then(onSuccess, onError);
+    }
+
+    this.deleteReminder = function (index, onSuccess, onError) {
+        $http.delete('/api/reminders/' + index).then(onSuccess, onError);
+    }
+}])
+
+var firstToUpperCase = function (input) {
     var out = '';
     input = input || '';
-    if (input.length > 0){
+    if (input.length > 0) {
         out = input.charAt(0).toUpperCase() + input.substring(1);
     }
     return out;
