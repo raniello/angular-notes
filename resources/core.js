@@ -1,5 +1,24 @@
 var app = angular.module('notes', ['ngRoute', 'providers']);
 
+
+app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+    $locationProvider.hashPrefix(''); // workaround
+    $routeProvider
+        .when("/", {
+            templateUrl : "insert.html",
+            controller : 'noteController'
+        })
+        .when("/insert", {
+            templateUrl : "insert.html",
+            controller : 'noteController'
+        })
+        .when("/list", {
+            templateUrl : "list.html",
+            controller : 'noteController'
+        });
+
+}]);
+
 app.controller('noteController', ['$scope', '$log', 'noteProvider',
     function ($scope, $log, noteProvider) {
         $scope.notes = [];
@@ -15,9 +34,10 @@ app.controller('noteController', ['$scope', '$log', 'noteProvider',
         });
 
         var addNoteToList = function (listName, note) {
+            console.log("Adding "+note)
             var add = listName == 'notes' ? noteProvider.addNote : noteProvider.addReminder
-            add(note, 
-                function () { console.log('adding');$scope[listName].push(firstToUpperCase(note)); },
+            add(note,
+                function () { $scope[listName].push(firstToUpperCase(note)); },
                 function (err) { alert('Error saving "' + note + '" into ' + listName); $log.error(err); });
         };
 
@@ -30,6 +50,7 @@ app.controller('noteController', ['$scope', '$log', 'noteProvider',
         };
 
         $scope.addNewNote = function () {
+            console.log($scope);
             addNoteToList('notes', $scope.newNote);
             $scope.newNote = "";
         }

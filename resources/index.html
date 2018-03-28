@@ -29,35 +29,11 @@
     <script src="providers.js"></script>
 </head>
 
-<body ng-controller="noteController">
-    <div class="container">
-        <div class="jumbotron text-center">
-            <h1>My Notes:
-                <span class="label label-info">{{notes.length + reminders.length}}</span>
-            </h1>
-        </div>
-    </div>
+<body>
 
-    <div class="note-form row">
-        <auto-generate label="reminder" note="reminder!" class="col-sm-offset-2" generate="addReminder(note)"></auto-generate>
-    </div>
-    <div class="note-form row">
-        <div class="col-sm-7 col-sm-offset-2 text-center">
-            <form>
-                <div class="form-group">
-                    <input type="text" class="form-control input-lg text-center" placeholder="Insert your note" ng-model="newNote">
-                </div>
-            </form>
-        </div>
-        <preview></preview>
-        <button type="submit" class="btn btn-primary btn-lg" ng-click="addNewNote()" ng-disabled="!newNote">Add Note</button>
-        <button type="submit" class="btn btn-primary btn-lg" ng-click="addNewReminder()" ng-disabled="!newNote">Add Reminder</button>
-    </div>
 
-    <div class="row">   
-        <note-list label="Notes" list="notes" on-check="deleteNote(index)" class="col-sm-5 col-sm-offset-1"></note-list>
-        <note-list label="Reminders" list="reminders" on-check="deleteReminder(index)" class="col-sm-5 col-sm-offset-0"></note-list>
-    </div>
+<ng-view></ng-view>
+
 </body> 
 
 </html>
